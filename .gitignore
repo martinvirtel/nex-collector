@@ -21,3 +21,5 @@ python_project/join([string_beginn,position_str,string_end])
 python_project/output.txt
 
 python_project/result.pprint
+
+python_project/join([string_beginn,position_str,string_end])
