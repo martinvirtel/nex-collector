@@ -1,0 +1,23 @@
+credentials.py
+__pycache__/
+datapipeline.py
+.DS_Store
+outputs/
+data/
+outputs 2/
+temp/
+*_apikey.py
+*.csv
+Versuche/*
+
+Call_NER/dandelion-response.json
+
+Call_NER/example.log
+
+Call_NER/cache.sqlite
+
+python_project/join([string_beginn,position_str,string_end])
+
+python_project/output.txt
+
+python_project/result.pprint
