@@ -4,9 +4,10 @@ from ambiverse_apikey import client_id, client_secret
 from ambiverse_token import get_token
 from joblib import Memory
 import os
-from check_file import check_file
 import logging
 import sys
+import time
+import datetime
 logging.basicConfig(level=logging.INFO,stream=sys.stdout)
 
 cachedir = "./temp"
@@ -27,17 +28,47 @@ def ambiverse(text):
     }
     response = requests.request("POST", ambiverse_request_url, data=payload, headers=headers)
     response= response.json()
-    response_matches =  response["matches"]
-    entity_list= []
     try:
-        for x in response_matches:
-            entity_list.append(x["entity"])
-        for x in response_matches:
-            x.update(x['entity'])
-            del x['entity']
-            output=[1,response_matches]
+        response_matches =  response["matches"]
 
+        entity_list= []
+        try:
+            if response["language"] != "de":
+                output=[False,response]
+            elif response["language"] == "de":
+                try:
+                    for entity in response["matches"]:
+                        entity["surface"] = entity["text"]
+                        entity["start"]= entity["charOffset"]
+                        entity["end"]=int(entity["start"])+int(entity["charLength"])
+                        entity["label"] = ""
+                        t=time.time()
+                        entity["timestamp"]='{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.utcfromtimestamp(t))
+                        extra={"ambiverse":"None"}
+                        entity["extra"] =str(extra)
+                        try:
+                            entity["confidene"] = entity["entity"]["confidence"]
+                        except KeyError:
+                            entity["confidene"] =""
+                            print("Confidence not found")
+                        try:
+                            uri=entity["entity"]["id"]
+                            uri=uri.replace("http://www.wikidata.org/entity/","")
+                            entity["uri"] = uri
+                            print(uri)
+                        except KeyError:
+                            entity["uri"] =""
+                            print("uri not found")
+                        del entity["entity"]
+                        del entity ["charLength"]
+                        del entity ["charOffset"]
+                        del entity["text"]
+                    output=[True,response["matches"]]
+                
+                except KeyError:
+                    output= [KeyError,response]
+        except KeyError:
+            output= [KeyError,response]
     except KeyError:
-        output=[0,response]
-
+        output= [KeyError,response]
     return output

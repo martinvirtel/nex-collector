@@ -6,7 +6,7 @@ logging.basicConfig(level=logging.INFO,stream=sys.stdout)
 
 
 def file_list(filename_csv):
-#filename_csv="auswahl-2017-04-26_003.csv"
+filename_csv="auswahl-2017-04-26_003.csv"
     """
     >>> type(csv_to_text("auswahl-2017-04-19.csv"))==list
     --1--
@@ -57,6 +57,47 @@ def file_list(filename_csv):
         
     ### write 3 dicts in list "liste_list"
         file_list.append(text_dic)
+    logging.info("Created: file_list with %s items\n" %(len(file_list)))  
+    return file_list
+
+    
+        
+
+
+#if __name__=="__main__" :
+#import doctest
+#doctest.testmod(verbose=True)
+
+
+
+def file_list(filename_csv):
+    file_list = []
+    filename_csv="auswahl-2017-04-26_003.csv"
+    
+    
+    f = open(filename_csv)
+    csv_f = csv.reader(f)
+
+    ### read "filename_csv" for filenames of dpa-texts
+
+    for row in csv_f :
+        filename = "".join(["/Users/alex/python_project/",row[0]])
+
+    ### open dpa json    
+        text_json = (json.load(open(filename)))
+
+    ### write dpa-text in dict
+    temp_dic={
+        "text":text_json["text"],
+        "dpa_id":text_json["dpaId"],
+        "date":text_json["createdAt"],
+        "ressort":text_json["dpaRessort"],
+        "title":text_json["dpaTitle"]
+    }
+        
+
+    ### write  dict in list "liste_list"
+    file_list.append(text_dic)
     logging.info("Created: file_list with %s items\n" %(len(file_list)))  
     return file_list
 

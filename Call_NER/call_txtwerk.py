@@ -3,6 +3,8 @@ from txt_werk_apikey import txt_werk
 from joblib import Memory
 import os
 import os.path
+import time
+import datetime
 
 cachedir = "./temp"
 if not os.path.exists(cachedir) :
@@ -17,9 +19,25 @@ def txtwerk (text):
     key = str(txt_werk['apikey'])
     headers={'X-Api-Key' : key}
     r = requests.post(TXT_WERK_URL, data={'text': text, 'services' : 'entities'}, headers=headers)
-    txt_werk_response = r.json()
+    response = r.json()
     try:
-        output=[1,txt_werk_response["entities"]]
+        if response["language"] != "de":
+            output=[False,response]
+        elif response["language"] == "de":
+            try:
+                for entity in response["entities"]:
+                    t=time.time()
+                    entity["timestamp"]='{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.utcfromtimestamp(t))
+                    if entity["uri"] !=None:
+                        entity["uri"]=entity["uri"].replace("https://www.wikidata.org/wiki/","")
+                    extra={"txtwerk":{"category":entity['type']}}
+                    entity["extra"] = str(extra)
+                    del(entity["type"])
+                output=[True,response["entities"]]
+            
+            except KeyError:
+                output= [KeyError,response]
     except KeyError:
-        output=[0,txt_werk_response]
+            output= [KeyError,response]
+
     return output
