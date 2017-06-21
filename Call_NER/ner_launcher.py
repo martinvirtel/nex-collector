@@ -4,6 +4,9 @@ from call_function import call_fuction
 from call_txtwerk import txtwerk
 from call_ambiverse import ambiverse
 from call_dandelion import dandelion
+from call_textrazor import textrazor
+from call_aylien import aylien
+from call_semantria import semantria
 from write_output_db import write_output_db
 import logging
 import sys
@@ -18,16 +21,19 @@ logging.basicConfig(level=logging.INFO,stream=sys.stdout)
 ### The module "auswahl.py" creates a random list of theses json files.
 ### The module "auswahl.py" creates a random list of theses json files.
 ### "filename_csv" is the csv-file with the file names of these random articles
-filename_csv= "auswahl-2017-04-19.csv"
+filename_csv= "temp.csv"
 
 
 ### In the list "ner_tools" all the NER-Tools are listed as functions.
 ### There will be a request for every tool in the list.
 ### As funtions:
 ner_tools= [ 
-    txtwerk,
-    dandelion,
-    ambiverse
+    txtwerk
+    # dandelion
+    # ambiverse
+    # textrazor
+    # aylien
+    # semantria
 ]
 
 ### This list makes strings from the functions
@@ -52,6 +58,6 @@ for item in dpa_list:
     #item["text"]="Dieser Text enthält keine Entis"
     #item["text"] = "Sanan Suomi  etymologiasta ei  ole täyttä varmuutta. Se on ilmeisesti ollut alun perin Suomenlahden ympäristöä ja sittemmin lähinnä Varsinais-Suomea koskeva nimitys ja laajentunut vasta myöhemmin tarkoittamaan koko maata."
 
-    call_fuction(item,ner_tools)
+    output=call_fuction(item,ner_tools)
 
 logging.info("\n***END***\nner_launcher done for %s documents with %s tools"%(len(dpa_list),(len(ner_tools))))

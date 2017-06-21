@@ -14,14 +14,14 @@ logging.basicConfig(level=logging.INFO,stream=sys.stdout)
 def write_output_db(output,item):
 
     ###Path Explanation
-    path_original = "/Users/alex/nex-analysis"
-    path = "/Users/alex/python_project/write_csv"
+    path_original = "/Users/alex/python_project/Call_NER"
+    path = "/Users/alex/nex-analysis"
 
-    #os.chdir(path)
+    os.chdir(path)
     ### Location of the database
-    db='sqlite:///test.db'
+    db='sqlite:///nex-analysis.db'
     database = dataset.connect(db)
-    #os.chdir(path_original)
+    os.chdir(path_original)
 
     ### Every table of the database is opened
     dpa_text=database["dpa_text"]
@@ -125,8 +125,15 @@ def write_output_db(output,item):
                 new_extra = ast.literal_eval(entity["extra"])
                 extra=ex_extra
                 extra.update(new_extra)
-                entity_db.upsert(dict(
+                entity_db.update(dict(
                     extra=str(extra),
+                    entity_id=entity_id
+                    ),["entity_id"])
+            value_label=list(database.query("select labelfromsurface from entity where rowid=:entity_id_id",entity_id_id=entity_id_id))[0]["labelfromsurface"]
+            if value_label == 1:
+                entity_db.update(dict(
+                    label=label,
+                    labelfromsurface=labelfromsurface,
                     entity_id=entity_id
                     ),["entity_id"])
        
@@ -155,4 +162,4 @@ def write_output_db(output,item):
                 
             
 
-        logging.info("output from dpa_id: %(dpa_id)s from tool: %(tool)s was writen into db"%locals())
+    logging.info("output from dpa_id: %(dpa_id)s from tool: %(tool)s was writen into db"%locals())

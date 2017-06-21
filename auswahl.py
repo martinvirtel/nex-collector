@@ -7,8 +7,8 @@ import random
 import csv
 
 
-laenge = 97
-name = "CALL_NER/auswahl-2017-05-01_97.csv"
+laenge = 300
+name = "CALL_NER/auswahl-2017-06-06_300.csv"
 verzeichnis = "outputs/**/*dpa.com*.json"
 
 auswahl=random.sample(list(Path(".").glob(verzeichnis)),laenge)

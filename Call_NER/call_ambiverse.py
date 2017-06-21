@@ -50,15 +50,12 @@ def ambiverse(text):
                             entity["confidene"] = entity["entity"]["confidence"]
                         except KeyError:
                             entity["confidene"] =""
-                            print("Confidence not found")
                         try:
                             uri=entity["entity"]["id"]
                             uri=uri.replace("http://www.wikidata.org/entity/","")
                             entity["uri"] = uri
-                            print(uri)
                         except KeyError:
                             entity["uri"] =""
-                            print("uri not found")
                         del entity["entity"]
                         del entity ["charLength"]
                         del entity ["charOffset"]

@@ -31,11 +31,8 @@ def dandelion(text):
                         alternate_labels=entity["alternate_labels"]
                     except KeyError:
                         alternate_labels="None"
-                        print("Alternate Labels not found")
                     if alternate_labels == None:
-                        alternate_labels="None"
-                    alternate_labels="TEST"
-                    print(alternate_labels)              
+                        alternate_labels="None"          
                     types=entity["types"]
                     image=entity["image"]
                     lod=entity["lod"]
@@ -44,15 +41,12 @@ def dandelion(text):
                     extra={
                         "dandelion":{"category":types,
                         "image":image,
-                        "alternate_labels":"TEST",
-                        #%s"%alternate_labels,
+                        "alternate_labels":alternate_labels,
                         "lod":lod,
                         "abstract":abstract,
                         "extra_categories":extra_categories
                         }}
-                    print(extra)
                     entity["extra"] =str(extra)
-                    print(extra)
                     t=time.time()
                     entity["timestamp"]='{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.utcfromtimestamp(t))
                     del entity ["types"]

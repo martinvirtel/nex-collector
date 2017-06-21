@@ -3,6 +3,9 @@ from check_file import check_file
 from call_txtwerk import txtwerk
 from call_dandelion import dandelion
 from call_ambiverse import ambiverse
+from call_textrazor import textrazor
+from call_aylien import aylien
+from call_semantria import semantria
 from write_output_db import write_output_db
 import logging
 import sys
@@ -61,6 +64,7 @@ def call_fuction(item,ner_tools):
             
             ### If there was no Error, file will be written into db
             write_output_db(output,item)
+    return(output)
 
     
 
